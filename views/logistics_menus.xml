@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Reuse the previous root XML ID, but move it inside the existing Fleet app. -->
+    <menuitem id="menu_wb_logistics_root" name="Logistics"
+              parent="fleet.menu_root" sequence="40"
+              groups="fleet.fleet_group_user"/>
+    <menuitem id="menu_wb_logistics_records" name="Logistics Records"
+              parent="menu_wb_logistics_root" action="action_wb_logistics_records"
+              sequence="10" groups="fleet.fleet_group_user"/>
+    <menuitem id="menu_wb_logistics_rates" name="Logistics Rate Configuration"
+              parent="fleet.fleet_configuration" action="action_wb_logistics_rates"
+              sequence="80" groups="fleet.fleet_group_manager"/>
+    <menuitem id="menu_wb_logistics_report" name="Logistics Report"
+              parent="fleet.menu_fleet_reporting" action="action_wb_logistics_report"
+              sequence="20" groups="fleet.fleet_group_user"/>
+</odoo>

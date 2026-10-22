@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <record id="view_wb_logistics_report_pivot" model="ir.ui.view">
+    <field name="name">wb.logistics.record.report.pivot</field>
+    <field name="model">wb.logistics.record</field>
+    <field name="arch" type="xml">
+      <pivot string="Logistics Report by Region" disable_linking="1">
+        <field name="region" type="row"/>
+        <field name="payment_category" type="col"/>
+        <field name="fuel_liters" type="measure"/>
+        <field name="fuel_cost" type="measure"/>
+        <field name="tcw40_qty" type="measure"/>
+        <field name="offloading_cost" type="measure"/>
+        <field name="total_rent" type="measure"/>
+        <field name="fuel_payment" type="measure"/>
+        <field name="total_payment" type="measure"/>
+        <field name="car_rent_cost" type="measure"/>
+        <field name="working_days" type="measure"/>
+      </pivot>
+    </field>
+  </record>
+  <record id="view_wb_logistics_report_graph" model="ir.ui.view">
+    <field name="name">wb.logistics.record.report.graph</field>
+    <field name="model">wb.logistics.record</field>
+    <field name="arch" type="xml">
+      <graph string="Logistics Payments by Region" type="bar">
+        <field name="region"/>
+        <field name="total_payment" type="measure"/>
+      </graph>
+    </field>
+  </record>
+  <record id="action_wb_logistics_report" model="ir.actions.act_window">
+    <field name="name">Logistics Report</field>
+    <field name="res_model">wb.logistics.record</field>
+    <field name="view_mode">pivot,graph,list</field>
+    <field name="context">{'search_default_group_region': 1}</field>
+  </record>
+</odoo>

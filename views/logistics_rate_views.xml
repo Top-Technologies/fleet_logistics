@@ -1,0 +1,17 @@
+<odoo>
+  <record id="view_wb_logistics_rate_list" model="ir.ui.view">
+    <field name="name">wb.logistics.rate.list</field><field name="model">wb.logistics.rate</field>
+    <field name="arch" type="xml"><list string="Daily Rate Configuration"><field name="region"/><field name="vehicle_type"/><field name="daily_rate"/><field name="currency_id"/><field name="active"/></list></field>
+  </record>
+  <record id="view_wb_logistics_rate_form" model="ir.ui.view">
+    <field name="name">wb.logistics.rate.form</field><field name="model">wb.logistics.rate</field>
+    <field name="arch" type="xml"><form string="Daily Rate"><sheet><div class="oe_title"><h1><field name="display_name"/></h1></div><group><group><field name="region"/><field name="vehicle_type"/></group><group><field name="daily_rate"/><field name="currency_id"/><field name="active"/></group></group></sheet></form></field>
+  </record>
+  <record id="view_wb_logistics_rate_search" model="ir.ui.view">
+    <field name="name">wb.logistics.rate.search</field><field name="model">wb.logistics.rate</field>
+    <field name="arch" type="xml"><search string="Daily Rates"><field name="region"/><field name="vehicle_type"/><filter name="active" string="Active" domain="[('active', '=', True)]"/></search></field>
+  </record>
+  <record id="action_wb_logistics_rates" model="ir.actions.act_window">
+    <field name="name">Daily Rate Configuration</field><field name="res_model">wb.logistics.rate</field><field name="view_mode">list,form</field><field name="search_view_id" ref="view_wb_logistics_rate_search"/>
+  </record>
+</odoo>

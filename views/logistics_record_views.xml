@@ -1,0 +1,44 @@
+<odoo>
+  <record id="view_wb_logistics_record_list" model="ir.ui.view">
+    <field name="name">wb.logistics.record.list</field><field name="model">wb.logistics.record</field>
+    <field name="arch" type="xml"><list string="Logistics Records" decoration-warning="not rate_found"><field name="name"/><field name="payment_category"/><field name="payment_period"/><field name="driver_name"/><field name="plate_no"/><field name="region"/><field name="vehicle_type"/><field name="date_start"/><field name="date_end"/><field name="working_days"/><field name="daily_rate"/><field name="total_rent"/><field name="fuel_liters"/><field name="fuel_cost"/><field name="offloading_cost"/><field name="total_payment"/></list></field>
+  </record>
+  <record id="view_wb_logistics_record_form" model="ir.ui.view">
+    <field name="name">wb.logistics.record.form</field><field name="model">wb.logistics.record</field>
+    <field name="arch" type="xml">
+      <form string="Logistics Record">
+        <sheet>
+          <div class="oe_title"><label for="name"/><h1><field name="name"/></h1></div>
+          <group>
+            <group string="Trip Details"><field name="payment_period"/><field name="company_name"/><field name="driver_name"/><field name="vehicle_id"/><field name="plate_no"/><field name="technician"/><field name="region"/><field name="vehicle_type"/></group>
+            <group string="Dates and Rental"><field name="date_start"/><field name="date_end"/><field name="working_days"/><field name="daily_rate"/><field name="total_rent"/><field name="car_rent_cost"/><field name="total_payment"/><field name="currency_id"/></group>
+          </group>
+          <notebook>
+            <page string="Mileage and Fuel"><group><group><field name="starting_km"/><field name="ending_km"/><field name="km_difference"/></group><group><field name="fuel_per_km"/><field name="fuel_liters"/><field name="fuel_price"/><field name="fuel_cost"/><field name="fuel_payment"/></group></group></page>
+            <page string="Offloading"><group><group><field name="tcw40_qty"/><field name="unit_cost"/></group><group><field name="offloading_cost"/></group></group></page>
+            <page string="Notes"><field name="remark" placeholder="Add a note..."/></page>
+          </notebook>
+        </sheet>
+        <chatter/>
+      </form>
+    </field>
+  </record>
+  <record id="view_wb_logistics_record_search" model="ir.ui.view">
+    <field name="name">wb.logistics.record.search</field>
+    <field name="model">wb.logistics.record</field>
+    <field name="arch" type="xml">
+      <search string="Logistics Records">
+        <field name="name"/>
+        <field name="driver_name"/>
+        <field name="plate_no"/>
+        <field name="region"/>
+        <field name="payment_period"/>
+        <field name="payment_category"/>
+        <filter name="group_region" string="Region" context="{'group_by': 'region'}"/>
+      </search>
+    </field>
+  </record>
+  <record id="action_wb_logistics_records" model="ir.actions.act_window">
+    <field name="name">Logistics Records</field><field name="res_model">wb.logistics.record</field><field name="view_mode">list,form</field><field name="search_view_id" ref="view_wb_logistics_record_search"/>
+  </record>
+</odoo>
