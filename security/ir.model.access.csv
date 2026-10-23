@@ -1,3 +1,7 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_wb_logistics_record_user,wb.logistics.record user,model_wb_logistics_record,base.group_user,1,1,1,1
 access_wb_logistics_rate_user,wb.logistics.rate user,model_wb_logistics_rate,base.group_user,1,1,1,1
+access_wb_logistics_driver_user,wb.logistics.driver user,model_wb_logistics_driver,base.group_user,1,1,1,1
+access_wb_logistics_technician_user,wb.logistics.technician user,model_wb_logistics_technician,base.group_user,1,1,1,1
+access_wb_logistics_order_user,wb.logistics.order user,model_wb_logistics_order,base.group_user,1,1,1,1
+access_wb_logistics_vehicle_type_user,wb.logistics.vehicle.type user,model_wb_logistics_vehicle_type,base.group_user,1,1,1,1

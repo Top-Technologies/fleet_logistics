@@ -7,6 +7,9 @@
     <menuitem id="menu_wb_logistics_records" name="Logistics Records"
               parent="menu_wb_logistics_root" action="action_wb_logistics_records"
               sequence="10" groups="fleet.fleet_group_user"/>
+    <menuitem id="menu_wb_logistics_orders" name="Orders"
+              parent="fleet.menu_root" action="action_wb_logistics_orders"
+              sequence="45" groups="fleet.fleet_group_user"/>
     <menuitem id="menu_wb_logistics_rates" name="Logistics Rate Configuration"
               parent="fleet.fleet_configuration" action="action_wb_logistics_rates"
               sequence="80" groups="fleet.fleet_group_manager"/>

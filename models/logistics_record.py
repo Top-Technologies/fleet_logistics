@@ -10,25 +10,29 @@ class WbLogisticsRecord(models.Model):
     _order = 'date_start desc, id desc'
     _rec_name = 'name'
 
+    def action_export_logistics_xlsx(self):
+        ids = self.ids or self.env.context.get('active_ids', [])
+        return {
+            'type': 'ir.actions.act_url',
+            'url': '/fleet_logistics/report/xlsx?ids=%s' % ','.join(map(str, ids)),
+            'target': 'new',
+        }
+
     name = fields.Char(string='Reference', required=True, copy=False, default=lambda self: _('New'), tracking=True)
-    payment_category = fields.Selection([
-        ('freight', 'Dry Freight'),
-        ('fuel', 'Fuel Payment'),
-        ('rental', 'Car Rental'),
-        ('land_cruiser', 'Land Cruiser Rental'),
-        ('other', 'Other'),
-    ], default='freight', required=True, tracking=True)
     payment_period = fields.Char(string='Payment Period', help='For example: Payment 1, Payment 2, or March 2026.')
     company_name = fields.Char(string='Transport Company / Supplier')
-    driver_name = fields.Char(string='Driver Name', required=True, tracking=True)
+    driver_id = fields.Many2one('wb.logistics.driver', string='Driver Name', tracking=True, ondelete='restrict')
+    driver_name = fields.Char(related='driver_id.name', store=True, string='Driver Name', readonly=True)
     vehicle_id = fields.Many2one('fleet.vehicle', string='Fleet Vehicle', ondelete='set null', tracking=True)
     plate_no = fields.Char(string='Plate Number', tracking=True, help='Use this if the vehicle is not yet registered in Fleet.')
     region = fields.Selection(REGION_SELECTION, required=True, tracking=True, index=True)
     vehicle_type = fields.Selection(VEHICLE_TYPE_SELECTION, required=True, default='fsr', tracking=True)
-    technician = fields.Char(string='Technician')
+    technician_id = fields.Many2one('wb.logistics.technician', string='Technician', tracking=True, ondelete='set null')
+    technician = fields.Char(related='technician_id.name', store=True, string='Technician', readonly=True)
     date_start = fields.Date(string='Starting Date', required=True, tracking=True)
     date_end = fields.Date(string='To Date', required=True, tracking=True)
     working_days = fields.Integer(string='Working Days', default=0, help='Automatically filled from the dates when they are changed, but you can edit this value manually.')
+    working_days_reason = fields.Text(string='Reason for Working Date Change')
     starting_km = fields.Float(string='Starting KM', digits=(16, 2))
     ending_km = fields.Float(string='Ending KM', digits=(16, 2))
     km_difference = fields.Float(string='KM Difference', compute='_compute_km_difference', store=True, digits=(16, 2))
@@ -37,6 +41,7 @@ class WbLogisticsRecord(models.Model):
     fuel_liters = fields.Float(string='Total Fuel / Liter', compute='_compute_fuel_liters', store=True, digits=(16, 2))
     fuel_cost = fields.Monetary(string='Fuel Cost', compute='_compute_fuel_cost', store=True, currency_field='currency_id')
     fuel_payment = fields.Monetary(string='Total Fuel Payment', compute='_compute_fuel_payment', store=True, currency_field='currency_id')
+    total_fuel_cost = fields.Monetary(string='Total Fuel Cost', compute='_compute_total_fuel_cost', store=True, currency_field='currency_id')
     tcw40_qty = fields.Float(string='TCW 40 Quantity', digits=(16, 2))
     unit_cost = fields.Monetary(string='Unit Cost', currency_field='currency_id', default=300.0)
     offloading_cost = fields.Monetary(string='Offloading Cost', compute='_compute_offloading_cost', store=True, currency_field='currency_id')
@@ -67,6 +72,8 @@ class WbLogisticsRecord(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
+            if not vals.get('driver_id'):
+                raise ValidationError(_('Select or create a driver.'))
             if not vals.get('working_days') and vals.get('date_start') and vals.get('date_end') and vals['date_end'] >= vals['date_start']:
                 from datetime import date
                 start = fields.Date.to_date(vals['date_start'])
@@ -95,6 +102,11 @@ class WbLogisticsRecord(models.Model):
     def _compute_fuel_payment(self):
         for rec in self:
             rec.fuel_payment = rec.fuel_cost
+
+    @api.depends('fuel_cost', 'offloading_cost')
+    def _compute_total_fuel_cost(self):
+        for rec in self:
+            rec.total_fuel_cost = rec.fuel_cost + rec.offloading_cost
 
     @api.depends('tcw40_qty', 'unit_cost')
     def _compute_offloading_cost(self):
@@ -133,15 +145,23 @@ class WbLogisticsRecord(models.Model):
         for rec in self:
             rec.total_rent = rec.daily_rate * rec.working_days
 
-    @api.depends('payment_category', 'total_rent')
+    @api.depends('fuel_payment', 'offloading_cost')
     def _compute_car_rent_cost(self):
         for rec in self:
-            rec.car_rent_cost = rec.total_rent if rec.payment_category in ('rental', 'land_cruiser') else 0.0
+            rec.car_rent_cost = rec.fuel_payment + rec.offloading_cost
 
-    @api.depends('fuel_cost', 'offloading_cost', 'total_rent')
+    @api.depends('car_rent_cost', 'total_rent')
     def _compute_total_payment(self):
         for rec in self:
-            rec.total_payment = rec.fuel_cost + rec.offloading_cost + rec.total_rent
+            rec.total_payment = rec.car_rent_cost + rec.total_rent
+
+    @api.constrains('working_days', 'date_start', 'date_end', 'working_days_reason')
+    def _check_working_days_reason(self):
+        for rec in self:
+            if rec.date_start and rec.date_end and rec.date_end >= rec.date_start:
+                expected_days = (rec.date_end - rec.date_start).days + 1
+                if rec.working_days != expected_days and not (rec.working_days_reason or '').strip():
+                    raise ValidationError(_('Enter a reason when Working Days differs from the date range.'))
 
     @api.constrains('date_start', 'date_end')
     def _check_dates(self):

@@ -1,7 +1,7 @@
 <odoo>
   <record id="view_wb_logistics_record_list" model="ir.ui.view">
     <field name="name">wb.logistics.record.list</field><field name="model">wb.logistics.record</field>
-    <field name="arch" type="xml"><list string="Logistics Records" decoration-warning="not rate_found"><field name="name"/><field name="payment_category"/><field name="payment_period"/><field name="driver_name"/><field name="plate_no"/><field name="region"/><field name="vehicle_type"/><field name="date_start"/><field name="date_end"/><field name="working_days"/><field name="daily_rate"/><field name="total_rent"/><field name="fuel_liters"/><field name="fuel_cost"/><field name="offloading_cost"/><field name="total_payment"/></list></field>
+    <field name="arch" type="xml"><list string="Logistics Records" decoration-warning="not rate_found"><field name="payment_period"/><field name="driver_name"/><field name="plate_no"/><field name="region"/><field name="technician"/><field name="date_start"/><field name="date_end"/><field name="working_days"/><field name="starting_km"/><field name="ending_km"/><field name="km_difference"/><field name="fuel_per_km"/><field name="fuel_price"/><field name="fuel_cost"/><field name="tcw40_qty"/><field name="unit_cost"/><field name="offloading_cost"/><field name="fuel_payment"/><field name="total_fuel_cost"/><field name="vehicle_type"/><field name="daily_rate"/><field name="total_rent"/><field name="car_rent_cost"/><field name="total_payment"/><field name="remark"/></list></field>
   </record>
   <record id="view_wb_logistics_record_form" model="ir.ui.view">
     <field name="name">wb.logistics.record.form</field><field name="model">wb.logistics.record</field>
@@ -10,11 +10,11 @@
         <sheet>
           <div class="oe_title"><label for="name"/><h1><field name="name"/></h1></div>
           <group>
-            <group string="Trip Details"><field name="payment_period"/><field name="company_name"/><field name="driver_name"/><field name="vehicle_id"/><field name="plate_no"/><field name="technician"/><field name="region"/><field name="vehicle_type"/></group>
-            <group string="Dates and Rental"><field name="date_start"/><field name="date_end"/><field name="working_days"/><field name="daily_rate"/><field name="total_rent"/><field name="car_rent_cost"/><field name="total_payment"/><field name="currency_id"/></group>
+            <group string="Trip Details"><field name="payment_period"/><field name="company_name"/><field name="driver_id" required="1" options="{'no_open': True}"/><field name="vehicle_id"/><field name="plate_no"/><field name="technician_id" options="{'no_open': True}"/><field name="region"/><field name="vehicle_type"/></group>
+            <group string="Dates and Rental"><field name="date_start"/><field name="date_end"/><field name="working_days"/><field name="working_days_reason"/><field name="daily_rate"/><field name="total_rent"/><field name="fuel_payment"/><field name="car_rent_cost"/><field name="total_payment"/><field name="currency_id"/></group>
           </group>
           <notebook>
-            <page string="Mileage and Fuel"><group><group><field name="starting_km"/><field name="ending_km"/><field name="km_difference"/></group><group><field name="fuel_per_km"/><field name="fuel_liters"/><field name="fuel_price"/><field name="fuel_cost"/><field name="fuel_payment"/></group></group></page>
+            <page string="Mileage and Fuel"><group><group><field name="starting_km"/><field name="ending_km"/><field name="km_difference"/></group><group><field name="fuel_per_km"/><field name="fuel_liters"/><field name="fuel_price"/><field name="fuel_cost"/><field name="fuel_payment"/><field name="total_fuel_cost"/></group></group></page>
             <page string="Offloading"><group><group><field name="tcw40_qty"/><field name="unit_cost"/></group><group><field name="offloading_cost"/></group></group></page>
             <page string="Notes"><field name="remark" placeholder="Add a note..."/></page>
           </notebook>
@@ -29,12 +29,16 @@
     <field name="arch" type="xml">
       <search string="Logistics Records">
         <field name="name"/>
-        <field name="driver_name"/>
+        <field name="driver_id"/>
         <field name="plate_no"/>
         <field name="region"/>
         <field name="payment_period"/>
-        <field name="payment_category"/>
         <filter name="group_region" string="Region" context="{'group_by': 'region'}"/>
+        <filter name="group_driver" string="Driver Name" context="{'group_by': 'driver_name'}"/>
+        <filter name="group_plate" string="Plate Number" context="{'group_by': 'plate_no'}"/>
+        <filter name="group_technician" string="Technician" context="{'group_by': 'technician'}"/>
+        <filter name="group_start_date" string="Starting Date" context="{'group_by': 'date_start'}"/>
+        <filter name="group_end_date" string="To Date" context="{'group_by': 'date_end'}"/>
       </search>
     </field>
   </record>

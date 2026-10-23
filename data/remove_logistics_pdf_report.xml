@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <delete model="ir.actions.report" search="[('report_name', '=', 'fleet_logistics.report_wb_logistics_document')]"/>
+</odoo>

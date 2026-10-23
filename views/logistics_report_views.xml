@@ -6,16 +6,28 @@
     <field name="arch" type="xml">
       <pivot string="Logistics Report by Region" disable_linking="1">
         <field name="region" type="row"/>
-        <field name="payment_category" type="col"/>
+        <field name="driver_name" type="row"/>
+        <field name="plate_no" type="row"/>
+        <field name="technician" type="row"/>
+        <field name="date_start" type="row"/>
+        <field name="date_end" type="row"/>
+        <field name="working_days" type="measure"/>
+        <field name="starting_km" type="measure"/>
+        <field name="ending_km" type="measure"/>
+        <field name="km_difference" type="measure"/>
+        <field name="fuel_per_km" type="measure"/>
         <field name="fuel_liters" type="measure"/>
+        <field name="fuel_price" type="measure"/>
         <field name="fuel_cost" type="measure"/>
+        <field name="total_fuel_cost" type="measure"/>
         <field name="tcw40_qty" type="measure"/>
+        <field name="unit_cost" type="measure"/>
         <field name="offloading_cost" type="measure"/>
+        <field name="daily_rate" type="measure"/>
         <field name="total_rent" type="measure"/>
         <field name="fuel_payment" type="measure"/>
         <field name="total_payment" type="measure"/>
         <field name="car_rent_cost" type="measure"/>
-        <field name="working_days" type="measure"/>
       </pivot>
     </field>
   </record>
@@ -29,10 +41,33 @@
       </graph>
     </field>
   </record>
+  <record id="view_wb_logistics_report_list" model="ir.ui.view">
+    <field name="name">wb.logistics.record.report.list</field>
+    <field name="model">wb.logistics.record</field>
+    <field name="arch" type="xml">
+      <list string="WB Fleet Logistics Report" create="0" edit="0" delete="0">
+        <header>
+          <button name="action_export_logistics_xlsx" type="object" string="Export Excel" class="btn-primary" icon="fa-file-excel-o"/>
+        </header>
+        <field name="payment_period"/>
+        <field name="name" string="No"/>
+        <field name="company_name"/><field name="driver_name"/><field name="vehicle_id" optional="hide"/><field name="plate_no"/>
+        <field name="region"/><field name="technician"/><field name="vehicle_type"/>
+        <field name="date_start"/><field name="date_end"/><field name="working_days"/>
+        <field name="working_days_reason" optional="hide"/>
+        <field name="starting_km"/><field name="ending_km"/><field name="km_difference"/>
+        <field name="fuel_per_km"/><field name="fuel_liters"/><field name="fuel_price"/><field name="fuel_cost"/>
+        <field name="tcw40_qty"/><field name="unit_cost"/><field name="offloading_cost"/>
+        <field name="daily_rate"/><field name="total_rent"/><field name="fuel_payment"/>
+        <field name="total_fuel_cost"/><field name="car_rent_cost"/><field name="total_payment"/>
+        <field name="remark" optional="hide"/><field name="currency_id" optional="hide"/><field name="rate_found" optional="hide"/>
+      </list>
+    </field>
+  </record>
   <record id="action_wb_logistics_report" model="ir.actions.act_window">
     <field name="name">Logistics Report</field>
     <field name="res_model">wb.logistics.record</field>
-    <field name="view_mode">pivot,graph,list</field>
+    <field name="view_mode">list,pivot,graph</field>
     <field name="context">{'search_default_group_region': 1}</field>
   </record>
 </odoo>

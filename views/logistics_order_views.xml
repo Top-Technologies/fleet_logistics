@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <record id="view_wb_logistics_order_list" model="ir.ui.view">
+    <field name="name">wb.logistics.order.list</field>
+    <field name="model">wb.logistics.order</field>
+    <field name="arch" type="xml">
+      <list string="Fleet Logistics Orders">
+        <field name="name"/>
+        <field name="vehicle_type_id"/>
+        <field name="vehicle_id" domain="[('tag_ids', 'in', tag_ids)]"/>
+        <field name="plate_no"/>
+        <field name="tag_ids" widget="many2many_tags" optional="show"/>
+        <field name="destination_from"/>
+        <field name="destination_to"/>
+        <field name="tr_reference"/>
+        <field name="check_in"/>
+        <field name="check_out"/>
+        <field name="time_out_hours" widget="float_time"/>
+        <field name="driver_id"/>
+      </list>
+    </field>
+  </record>
+  <record id="view_wb_logistics_order_form" model="ir.ui.view">
+    <field name="name">wb.logistics.order.form</field>
+    <field name="model">wb.logistics.order</field>
+    <field name="arch" type="xml">
+      <form string="Fleet Logistics Order">
+        <sheet>
+          <div class="oe_title">
+            <label for="name" string="Order Reference"/>
+            <h1><field name="name"/></h1>
+          </div>
+          <group>
+            <group string="Vehicle and Driver">
+              <field name="vehicle_type_id" options="{'no_create': False, 'no_create_edit': False}"/>
+              <field name="vehicle_id" domain="[('tag_ids', 'in', tag_ids)]"/>
+              <field name="plate_no"/>
+              <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+              <field name="driver_id" options="{'no_open': True}"/>
+            </group>
+            <group string="Route and Timing">
+              <field name="destination_from"/>
+              <field name="destination_to"/>
+              <field name="tr_reference"/>
+              <field name="check_in"/>
+              <field name="check_out"/>
+              <field name="time_out_hours" widget="float_time" readonly="1"/>
+            </group>
+          </group>
+        </sheet>
+        <chatter/>
+      </form>
+    </field>
+  </record>
+  <record id="view_wb_logistics_order_search" model="ir.ui.view">
+    <field name="name">wb.logistics.order.search</field>
+    <field name="model">wb.logistics.order</field>
+    <field name="arch" type="xml">
+      <search string="Fleet Logistics Orders">
+        <field name="name"/>
+        <field name="driver_id"/>
+        <field name="plate_no"/>
+        <field name="tr_reference"/>
+        <field name="destination_from"/>
+        <field name="destination_to"/>
+      </search>
+    </field>
+  </record>
+  <record id="action_wb_logistics_orders" model="ir.actions.act_window">
+    <field name="name">Orders</field>
+    <field name="res_model">wb.logistics.order</field>
+    <field name="view_mode">list,form</field>
+    <field name="search_view_id" ref="view_wb_logistics_order_search"/>
+  </record>
+</odoo>

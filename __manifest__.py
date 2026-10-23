@@ -1,6 +1,6 @@
 {
     "name": "Fleet Logistics Customization",
-    "version": "19.0.2.0.0",
+    "version": "19.0.2.8.0",
     "summary": "Logistics records, calculations and regional reporting inside Fleet",
     "category": "Operations/Fleet",
     "author": "Custom",
@@ -12,6 +12,8 @@
         "views/logistics_rate_views.xml",
         "views/logistics_record_views.xml",
         "views/logistics_report_views.xml",
+        "data/remove_logistics_pdf_report.xml",
+        "views/logistics_order_views.xml",
         "views/logistics_menus.xml",
     ],
     "installable": True,
