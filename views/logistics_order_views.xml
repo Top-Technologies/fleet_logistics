@@ -13,8 +13,8 @@
         <field name="destination_from"/>
         <field name="destination_to"/>
         <field name="tr_reference"/>
-        <field name="check_in"/>
         <field name="check_out"/>
+        <field name="check_in"/>
         <field name="time_out_hours" widget="float_time"/>
         <field name="driver_id"/>
       </list>
@@ -42,8 +42,8 @@
               <field name="destination_from"/>
               <field name="destination_to"/>
               <field name="tr_reference"/>
-              <field name="check_in"/>
               <field name="check_out"/>
+              <field name="check_in"/>
               <field name="time_out_hours" widget="float_time" readonly="1"/>
             </group>
           </group>
