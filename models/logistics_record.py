@@ -27,6 +27,7 @@ class WbLogisticsRecord(models.Model):
     plate_no = fields.Char(string='Plate Number', tracking=True, help='Use this if the vehicle is not yet registered in Fleet.')
     region = fields.Selection(REGION_SELECTION, required=True, tracking=True, index=True)
     vehicle_type = fields.Selection(VEHICLE_TYPE_SELECTION, required=True, default='fsr', tracking=True)
+    project = fields.Char(string='Project', tracking=True)
     technician_id = fields.Many2one('wb.logistics.technician', string='Technician', tracking=True, ondelete='set null')
     technician = fields.Char(related='technician_id.name', store=True, string='Technician', readonly=True)
     date_start = fields.Date(string='Starting Date', required=True, tracking=True)

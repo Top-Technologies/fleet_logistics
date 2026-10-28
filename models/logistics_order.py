@@ -21,7 +21,7 @@ class WbLogisticsOrder(models.Model):
     check_in = fields.Datetime(string='Time Check In', tracking=True)
     check_out = fields.Datetime(string='Time Check Out', tracking=True)
     time_out_hours = fields.Float(string='Time Out', compute='_compute_time_out_hours', store=True,
-                                  digits=(16, 2), help='Elapsed time between check in and check out, in hours.')
+                                  digits=(16, 2), help='Elapsed time from leaving the office at Check Out until returning at Check In.')
     driver_id = fields.Many2one('wb.logistics.driver', string='Driver Name', required=True,
                                 tracking=True, ondelete='restrict')
 
@@ -49,15 +49,15 @@ class WbLogisticsOrder(models.Model):
     @api.depends('check_in', 'check_out')
     def _compute_time_out_hours(self):
         for order in self:
-            if order.check_in and order.check_out and order.check_out >= order.check_in:
-                order.time_out_hours = (order.check_out - order.check_in).total_seconds() / 3600.0
+            if order.check_out and order.check_in and order.check_in >= order.check_out:
+                order.time_out_hours = (order.check_in - order.check_out).total_seconds() / 3600.0
             else:
                 order.time_out_hours = 0.0
 
     @api.constrains('check_in', 'check_out')
     def _check_check_times(self):
         for order in self:
-            if order.check_in and order.check_out and order.check_out < order.check_in:
-                raise ValidationError(_('Check Out cannot be earlier than Check In.'))
+            if order.check_out and order.check_in and order.check_in < order.check_out:
+                raise ValidationError(_('Check In (return) cannot be earlier than Check Out (departure).'))
 
 

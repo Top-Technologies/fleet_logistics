@@ -52,7 +52,7 @@
         <field name="payment_period"/>
         <field name="name" string="No"/>
         <field name="company_name"/><field name="driver_name"/><field name="vehicle_id" optional="hide"/><field name="plate_no"/>
-        <field name="region"/><field name="technician"/><field name="vehicle_type"/>
+        <field name="region"/><field name="technician"/><field name="vehicle_type"/><field name="project"/>
         <field name="date_start"/><field name="date_end"/><field name="working_days"/>
         <field name="working_days_reason" optional="hide"/>
         <field name="starting_km"/><field name="ending_km"/><field name="km_difference"/>

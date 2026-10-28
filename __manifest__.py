@@ -1,6 +1,6 @@
 {
     "name": "Fleet Logistics Customization",
-    "version": "19.0.2.8.0",
+    "version": "19.0.2.9.0",
     "summary": "Logistics records, calculations and regional reporting inside Fleet",
     "category": "Operations/Fleet",
     "author": "Custom",
