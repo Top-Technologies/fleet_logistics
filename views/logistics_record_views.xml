@@ -14,6 +14,16 @@
             <group string="Dates and Rental"><field name="date_start"/><field name="date_end"/><field name="working_days"/><field name="working_days_reason"/><field name="daily_rate"/><field name="total_rent"/><field name="fuel_payment"/><field name="car_rent_cost"/><field name="total_payment"/><field name="currency_id"/></group>
           </group>
           <notebook>
+            <page string="Daily">
+              <field name="daily_line_ids">
+                <list editable="bottom">
+                  <field name="date"/>
+                  <field name="starting_km"/>
+                  <field name="ending_km"/>
+                  <field name="km_difference" readonly="1" sum="Total KM Difference"/>
+                </list>
+              </field>
+            </page>
             <page string="Mileage and Fuel"><group><group><field name="starting_km"/><field name="ending_km"/><field name="km_difference"/></group><group><field name="fuel_per_km"/><field name="fuel_liters"/><field name="fuel_price"/><field name="fuel_cost"/><field name="fuel_payment"/><field name="total_fuel_cost"/></group></group></page>
             <page string="Offloading"><group><group><field name="tcw40_qty"/><field name="unit_cost"/></group><group><field name="offloading_cost"/></group></group></page>
             <page string="Notes"><field name="remark" placeholder="Add a note..."/></page>

@@ -30,6 +30,7 @@ class WbLogisticsRecord(models.Model):
     project = fields.Char(string='Project', tracking=True)
     technician_id = fields.Many2one('wb.logistics.technician', string='Technician', tracking=True, ondelete='set null')
     technician = fields.Char(related='technician_id.name', store=True, string='Technician', readonly=True)
+    daily_line_ids = fields.One2many('wb.logistics.daily.line', 'logistics_id', string='Daily KM Log')
     date_start = fields.Date(string='Starting Date', required=True, tracking=True)
     date_end = fields.Date(string='To Date', required=True, tracking=True)
     working_days = fields.Integer(string='Working Days', default=0, help='Automatically filled from the dates when they are changed, but you can edit this value manually.')
